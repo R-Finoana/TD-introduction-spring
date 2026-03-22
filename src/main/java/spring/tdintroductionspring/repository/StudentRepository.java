@@ -28,4 +28,13 @@ public class StudentRepository {
             return std;
         });
     }
+
+    public void createStudent(String reference, String firsName, String lastName, Integer age){
+        String sql = """
+                INSERT INTO student (reference, first_name, last_name, age)
+                VALUES (?, ?, ?, ?);
+                """;
+
+        jdbcTemplate.update(sql, reference, firsName, lastName, age);
+    }
 }
