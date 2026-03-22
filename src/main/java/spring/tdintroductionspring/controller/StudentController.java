@@ -18,7 +18,7 @@ public class StudentController {
 
     private final StudentService service;
 
-    @PostMapping
+    @PostMapping("/students")
     public List<Student> createStudent(@RequestBody Student student){
         try{
             return service.createStudentList(student);
@@ -27,7 +27,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/students")
     public ResponseEntity<String> getStudents(@RequestHeader(value= HttpHeaders.ACCEPT, defaultValue = MediaType.TEXT_PLAIN_VALUE) String student){
 
         if(!student.contains("text/plain")){
