@@ -19,16 +19,14 @@ public class StudentController {
     private final StudentService service;
 
     @PostMapping("/students")
-    public String createStudent(@RequestBody List<Student> newStudents){
+    public ResponseEntity<List<Student>> createStudent(@RequestBody List<Student> newStudents){
         try{
             List<Student> allStudents = service.createStudentList(newStudents);
 
-            return allStudents.stream()
-                    .map(std -> std.getFirstName()+" "+std.getLastName())
-                    .collect(Collectors.joining("\n"));
-
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(allStudents);
         } catch (Exception e){
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
