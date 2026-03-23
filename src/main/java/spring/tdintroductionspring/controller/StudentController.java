@@ -19,9 +19,14 @@ public class StudentController {
     private final StudentService service;
 
     @PostMapping("/students")
-    public List<Student> createStudent(@RequestBody Student student){
+    public String createStudent(@RequestBody List<Student> newStudents){
         try{
-            return service.createStudentList(student);
+            List<Student> allStudents = service.createStudentList(newStudents);
+
+            return allStudents.stream()
+                    .map(std -> std.getFirstName()+" "+std.getLastName())
+                    .collect(Collectors.joining("\n"));
+
         } catch (Exception e){
             throw new RuntimeException(e);
         }
