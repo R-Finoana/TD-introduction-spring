@@ -33,13 +33,20 @@ public class StudentController {
     @GetMapping("/students")
     public ResponseEntity<List<Student>> getStudents(@RequestHeader(value= HttpHeaders.ACCEPT, required = false) String accept){
 
-        List<Student> students = service.getAllStudents();
+        try{
+            if(accept == null){
+                return ResponseEntity.status(400).build();
+            }
 
-        if(accept == null){
-            return ResponseEntity.status(400).build();
-        } else if(!accept.contains("text/plain") && !accept.contains("application/json")) {
-            return ResponseEntity.status(501).build();
+            if(!accept.contains("text/plain") && !accept.contains("application/json")) {
+                return ResponseEntity.status(501).build();
+            }
+
+            List<Student> students = service.getAllStudents();
+            return ResponseEntity.ok().body(students);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
         }
-        return ResponseEntity.ok().body(students);
     }
 }
