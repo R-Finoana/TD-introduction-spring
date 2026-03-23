@@ -16,9 +16,7 @@ public class StudentService {
         return repository.getStudentsList();
     }
 
-    public List<Student> createStudentList(Student newStudent){
-        repository.createStudent(newStudent.getReference(), newStudent.getFirstName(), newStudent.getLastName(), newStudent.getAge());
-
-        return getAllStudents();
+    public List<Student> createStudentList(List<Student> newStudents){
+        return repository.createStudents(newStudents);
     }
 }
