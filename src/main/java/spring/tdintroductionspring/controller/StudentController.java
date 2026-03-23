@@ -31,19 +31,15 @@ public class StudentController {
     }
 
     @GetMapping("/students")
-    public ResponseEntity<String> getStudents(@RequestHeader(value= HttpHeaders.ACCEPT, defaultValue = MediaType.TEXT_PLAIN_VALUE) String student){
-
-        if(!student.contains("text/plain")){
-            return ResponseEntity.status(415)
-                    .body("Unsupported format");
-        }
+    public ResponseEntity<List<Student>> getStudents(@RequestHeader(value= HttpHeaders.ACCEPT, required = false) String accept){
 
         List<Student> students = service.getAllStudents();
 
-        String body = students.stream()
-                .map(std -> std.getFirstName()+" "+std.getLastName())
-                .collect(Collectors.joining("\n"));
-
-        return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(body);
+        if(accept == null){
+            return ResponseEntity.status(400).build();
+        } else if(!accept.contains("text/plain") && !accept.contains("application/json")) {
+            return ResponseEntity.status(501).build();
+        }
+        return ResponseEntity.ok().body(students);
     }
 }
